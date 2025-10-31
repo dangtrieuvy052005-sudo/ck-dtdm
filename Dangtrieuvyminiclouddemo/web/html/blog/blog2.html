@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bài viết 2: AWS EC2 là gì?</title>
+    <!-- Import Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* CSS "Ố DỀ" VÀ "WOW" - Tái sử dụng từ blog1.html */
+      :root {
+        --bg-color: #121212;
+        --surface-color: #1e1e1e;
+        --primary-color: #ff9900; /* AWS Orange */
+        --text-color: #e0e0e0;
+        --header-font: "Inter", sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--header-font);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.7;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: var(--surface-color);
+        border-radius: 10px;
+        box-shadow: 0 0 25px rgba(255, 153, 0, 0.15); /* Hiệu ứng glow "wow" */
+        animation: fadeIn 1s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      header h1 {
+        font-size: 2.8rem;
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 2rem;
+        text-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
+      }
+
+      article img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+      }
+
+      article h2 {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 5px;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      article p {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      /* Phần "phức tạp" - Code Block */
+      pre.code-block {
+        background: #2d2d2d;
+        padding: 1.5rem;
+        border-radius: 5px;
+        overflow-x: auto;
+        position: relative; /* Để chứa nút copy */
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.95rem;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: var(--primary-color);
+        color: var(--bg-color);
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-weight: 700;
+      }
+      .copy-btn:hover {
+        background: #ffffff;
+        color: var(--primary-color);
+      }
+      .copy-btn:active {
+        transform: scale(0.95);
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      footer a {
+        display: inline-block;
+        background: var(--primary-color);
+        color: var(--bg-color);
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+      }
+      footer a:hover {
+        transform: scale(1.05) rotate(2deg); /* Hiệu ứng "ố dề" */
+        box-shadow: 0 5px 15px rgba(255, 153, 0, 0.4);
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        .container {
+          margin: 1rem;
+          padding: 1rem;
+        }
+        header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Bài viết 2: AWS EC2 là gì?</h1>
+      </header>
+
+      <article>
+        <img
+          src="https://placehold.co/800x300/121212/FF9900?text=AWS+EC2+Instances"
+          alt="AWS Image"
+        />
+
+        <h2>Dịch vụ cốt lõi của Cloud</h2>
+        <p>
+          Amazon Elastic Compute Cloud (Amazon EC2) là một dịch vụ web cung cấp
+          khả năng tính toán an toàn, có thể thay đổi kích thước trong đám mây.
+          Nó được thiết kế để giúp các nhà phát triển dễ dàng hơn trong việc
+          tính toán ở quy mô web. Giao diện dịch vụ web đơn giản của Amazon EC2
+          cho phép bạn nhận và định cấu hình dung lượng với ma sát tối thiểu.
+        </p>
+
+        <h2>Ví dụ : Lệnh AWS CLI</h2>
+        <p>
+          Đây là một ví dụ về lệnh AWS CLI (Command Line Interface) để khởi chạy
+          một EC2 instance (máy chủ ảo) với cấu hình chi tiết, bao gồm Security
+          Group, Key Pair và User Data (để tự động cài đặt Nginx khi khởi động).
+        </p>
+
+        <pre class="code-block" id="awsCode"><code>
+aws ec2 run-instances \
+    --image-id ami-0abcdef1234567890 \
+    --count 1 \
+    --instance-type t2.micro \
+    --key-name MyKeyPair \
+    --security-group-ids sg-0abcdef1234567890 \
+    --subnet-id subnet-0abcdef1234567890 \
+    --user-data file://install-nginx.sh \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=MyWebServer}]'
+            </code><button class="copy-btn" onclick="copyCode('awsCode')">Copy</button></pre>
+      </article>
+
+      <footer>
+        <a href="index.html">Quay lại Blog</a>
+      </footer>
+    </div>
+
+    <!-- JavaScript cho nút Copy (Giống hệt blog1) -->
+    <script>
+      function copyCode(id) {
+        const pre = document.getElementById(id);
+        const text = pre.querySelector("code").innerText;
+        const btn = pre.querySelector("button");
+
+        const el = document.createElement("textarea");
+        el.value = text;
+        el.setAttribute("readonly", "");
+        el.style.position = "absolute";
+        el.style.left = "-9999px";
+        document.body.appendChild(el);
+
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+
+        btn.innerText = "Đã copy!";
+        setTimeout(() => {
+          btn.innerText = "Copy";
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>

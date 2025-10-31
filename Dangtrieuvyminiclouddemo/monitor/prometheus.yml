@@ -1,0 +1,17 @@
+# 7. Monitoring (Prometheus)
+# File prometheus.yml (ĐÃ SỬA)
+
+global:
+  scrape_interval: 15s # Tần suất lấy metrics
+
+scrape_configs:
+  # Job tên 'node' để lấy metrics từ Node Exporter
+  - job_name: "node"
+    static_configs:
+      - targets: ["node-exporter:9100"]
+
+  # --- THÊM MỚI: Job để giám sát 2 web server ---
+  - job_name: "web_servers"
+    static_configs:
+      - targets: ["web1:80", "web2:80"]
+  # --- KẾT THÚC THÊM MỚI ---

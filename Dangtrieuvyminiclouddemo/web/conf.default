@@ -1,0 +1,23 @@
+# 1. Web Frontend Server (Nginx)
+# File cấu hình cho Nginx (conf.default)
+
+server {
+  listen 80;
+  server_name _;
+  
+  # Thư mục gốc chứa file web
+  root /usr/share/nginx/html;
+  index index.html;
+
+  # Cấu hình cho trang chủ
+  location / { 
+    try_files $uri $uri/ =404; 
+  }
+
+  # Cấu hình riêng cho trang blog
+  location ^~ /blog/ {
+    alias /usr/share/nginx/html/blog/;
+    index index.html;
+    autoindex off;
+  }
+}

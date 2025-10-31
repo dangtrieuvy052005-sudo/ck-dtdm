@@ -1,0 +1,8 @@
+# 6. Internal DNS Server (Bind9)
+# File named.conf.local
+
+# Định nghĩa zone nội bộ 'cloud.local'
+zone "cloud.local" IN { 
+  type master; 
+  file "/etc/bind/db.cloud.local"; 
+};

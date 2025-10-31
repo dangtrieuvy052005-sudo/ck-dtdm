@@ -1,0 +1,8 @@
+# 6. Internal DNS Server (Bind9)
+# File named.conf.options
+
+options { 
+  directory "/var/cache/bind"; 
+  allow-query { any; }; 
+  recursion yes; 
+};

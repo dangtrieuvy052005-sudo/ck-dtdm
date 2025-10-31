@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sv001",
+    "name": "Nguyễn Văn A",
+    "major": "Công nghệ Thông tin",
+    "gpa": 3.2
+  },
+  {
+    "id": "sv002",
+    "name": "Trần Thị B",
+    "major": "Kỹ thuật Phần mềm",
+    "gpa": 3.5
+  },
+  {
+    "id": "sv003",
+    "name": "Lê Văn C",
+    "major": "An toàn Thông tin",
+    "gpa": 3.0
+  },
+  {
+    "id": "sv004",
+    "name": "Phạm Thị D",
+    "major": "Công nghệ Thông tin",
+    "gpa": 2.8
+  },
+  {
+    "id": "sv005",
+    "name": "Hoàng Văn E",
+    "major": "Khoa học Máy tính",
+    "gpa": 3.7
+  }
+]
