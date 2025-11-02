@@ -1,18 +1,23 @@
-﻿-- 3. Relational Database Server (MariaDB)
--- File SQL này sẽ tự động chạy khi container MariaDB khởi động lần đầu tiên
+-- Khởi tạo cơ sở dữ liệu cho hệ thống MiniCloud
+-- Tạo database studentdb và bảng students với dữ liệu mẫu
 
--- Tạo database nếu chưa tồn tại
-CREATE DATABASE IF NOT EXISTS minicloud;
+CREATE DATABASE IF NOT EXISTS studentdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE studentdb;
 
--- Sử dụng database
-USE minicloud;
-
--- Tạo bảng 'notes' nếu chưa tồn tại
-CREATE TABLE IF NOT EXISTS notes(
+CREATE TABLE IF NOT EXISTS students (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(100) NOT NULL,
+  student_code VARCHAR(20) NOT NULL,
+  full_name VARCHAR(100) NOT NULL,
+  major VARCHAR(100) NOT NULL,
+  gpa DECIMAL(3,2) NOT NULL CHECK (gpa BETWEEN 0 AND 4),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Chèn dữ liệu mẫu
-INSERT INTO notes(title) VALUES ('Hello from MariaDB!');
+INSERT INTO students (student_code, full_name, major, gpa) VALUES
+  ('SV001', 'Nguyễn Văn A', 'Công nghệ thông tin', 3.20),
+  ('SV002', 'Trần Thị B', 'Kỹ thuật phần mềm', 3.50),
+  ('SV003', 'Lê Văn C', 'Hệ thống thông tin', 3.10)
+ON DUPLICATE KEY UPDATE
+  full_name = VALUES(full_name),
+  major = VALUES(major),
+  gpa = VALUES(gpa);

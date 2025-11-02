@@ -42,7 +42,7 @@ services:
     container_name: db
     environment:
       MARIADB_ROOT_PASSWORD: root
-      MARIADB_DATABASE: minicloud
+      MARIADB_DATABASE: studentdb
     volumes:
       - ./db/init:/docker-entrypoint-initdb.d:ro
     ports:

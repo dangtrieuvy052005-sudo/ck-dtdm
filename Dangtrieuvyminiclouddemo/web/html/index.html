@@ -1,5 +1,150 @@
-<!-- 1. Web Frontend Server (Nginx) -->
-<!-- File /html/index.html -->
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>MyMiniCloud - Trang chủ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --primary: #2563eb;
+        --background: #f8fafc;
+        --card: #ffffff;
+        --text: #1e293b;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--background);
+        color: var(--text);
+        line-height: 1.6;
+        padding: 2rem;
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+      header h1 {
+        font-size: 2rem;
+        color: var(--primary);
+      }
+      nav a {
+        color: var(--text);
+        margin-left: 1rem;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      nav a:hover {
+        color: var(--primary);
+      }
+      .hero {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(14, 165, 233, 0.1));
+        border-radius: 18px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.1);
+      }
+      .hero h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      .grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 28px rgba(37, 99, 235, 0.25);
+      }
+      .card h3 {
+        margin-bottom: 0.8rem;
+        color: var(--primary);
+      }
+      .card p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+      footer {
+        margin-top: 3rem;
+        text-align: center;
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+      @media (max-width: 600px) {
+        body {
+          padding: 1.2rem;
+        }
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+        nav a {
+          margin-left: 0;
+          margin-right: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>MyMiniCloud</h1>
+      <nav>
+        <a href="/">Trang chủ</a>
+        <a href="/blog/">Blog</a>
+        <a href="/student/" target="_blank">API Sinh viên</a>
+      </nav>
+    </header>
 
-<h1>MyMiniCloud – Home</h1>
-<a href="/blog/">Blog</a>
+    <section class="hero">
+      <h2>Hạ tầng Cloud thu nhỏ dành cho môn học</h2>
+      <p>
+        Hệ thống MyMiniCloud mô phỏng 9 dịch vụ cốt lõi của một nền tảng Cloud
+        hiện đại: từ web frontend, backend API, cơ sở dữ liệu, Keycloak, MinIO,
+        DNS nội bộ cho tới giám sát và proxy cân bằng tải. Tất cả được đóng gói
+        bằng Docker Compose để dễ dàng triển khai và báo cáo.
+      </p>
+    </section>
+
+    <section>
+      <h2>Thành phần nổi bật</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Web Frontend</h3>
+          <p>Website tĩnh với trang blog 3 bài viết, sẵn sàng kiểm thử cơ chế load balancing qua Nginx Proxy.</p>
+        </article>
+        <article class="card">
+          <h3>Backend API</h3>
+          <p>Flask service cung cấp các API công khai và bảo mật, tích hợp xác thực Keycloak qua chuẩn OIDC.</p>
+        </article>
+        <article class="card">
+          <h3>Database MariaDB</h3>
+          <p>Schema <code>studentdb</code> chứa bảng <code>students</code> với dữ liệu mẫu phục vụ demo báo cáo.</p>
+        </article>
+        <article class="card">
+          <h3>Quan sát hệ thống</h3>
+          <p>Prometheus + Grafana dựng sẵn dashboard để theo dõi Node Exporter và các dịch vụ web.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2024 MyMiniCloud Demo &mdash; Sinh viên: Dang Trieu Vy
+    </footer>
+  </body>
+</html>
