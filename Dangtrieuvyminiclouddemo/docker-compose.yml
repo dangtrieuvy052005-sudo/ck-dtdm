@@ -1,4 +1,5 @@
 # File docker-compose.yml (ĐÃ SỬA)
+# Snapshot cập nhật phục vụ yêu cầu kiểm tra cấu hình tổng thể.
 
 networks:
   cloud-net:
