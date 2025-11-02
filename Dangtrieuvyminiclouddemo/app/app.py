@@ -15,7 +15,7 @@ from __future__ import annotations
 import json
 import os
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from threading import Lock
 from typing import Any, Dict
@@ -68,6 +68,51 @@ TOTAL_REQUESTS: int = 0
 app = Flask(__name__)
 
 
+@dataclass(frozen=True)
+class Student:
+    """Biểu diễn một sinh viên được khai báo trong ``students.json``."""
+
+    id: str
+    name: str
+    major: str
+    gpa: float
+
+    @classmethod
+    def from_payload(cls, payload: Dict[str, Any]) -> "Student":
+        """Chuyển đổi ``payload`` JSON thành :class:`Student` và kiểm tra dữ liệu."""
+
+        if not isinstance(payload, dict):
+            raise ValueError("Dữ liệu sinh viên phải là object JSON")
+
+        try:
+            raw_id = str(payload["id"]).strip()
+            name = str(payload["name"]).strip()
+            major = str(payload["major"]).strip()
+            gpa_value = payload["gpa"]
+        except KeyError as exc:
+            raise ValueError(f"Thiếu trường bắt buộc: {exc.args[0]}") from exc
+
+        if not raw_id:
+            raise ValueError("Mỗi sinh viên phải có mã 'id' khác rỗng")
+        if not name:
+            raise ValueError(f"Sinh viên {raw_id} thiếu họ tên hợp lệ")
+        if not major:
+            raise ValueError(f"Sinh viên {raw_id} thiếu chuyên ngành hợp lệ")
+
+        try:
+            gpa = float(gpa_value)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"GPA của sinh viên {raw_id} không hợp lệ") from exc
+
+        if not 0 <= gpa <= 4:
+            raise ValueError(f"GPA của sinh viên {raw_id} phải nằm trong khoảng 0-4")
+
+        return cls(id=raw_id, name=name, major=major, gpa=round(gpa, 2))
+
+    def as_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
 def _load_students() -> list[Dict[str, Any]]:
     """Read the student list from disk with basic caching."""
 
@@ -88,17 +133,16 @@ def _load_students() -> list[Dict[str, Any]]:
         if not isinstance(raw_data, list):
             raise ValueError("students.json không chứa danh sách sinh viên hợp lệ")
 
-        cleaned: list[Dict[str, Any]] = []
+        students: list[Student] = []
         for index, item in enumerate(raw_data, start=1):
-            if isinstance(item, dict):
-                cleaned.append(item)
-            else:
-                raise ValueError(
-                    f"students.json dòng {index} không đúng định dạng đối tượng JSON"
-                )
+            try:
+                students.append(Student.from_payload(item))
+            except ValueError as exc:
+                raise ValueError(f"Lỗi ở dòng {index}: {exc}") from exc
 
-        STUDENTS_CACHE = (mtime, cleaned)
-        return cleaned
+        serialised = [student.as_dict() for student in students]
+        STUDENTS_CACHE = (mtime, serialised)
+        return serialised
 
 
 def _extract_bearer_token(header_value: str | None) -> str:
