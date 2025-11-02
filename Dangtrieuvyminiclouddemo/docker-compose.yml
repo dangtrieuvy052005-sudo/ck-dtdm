@@ -6,22 +6,15 @@ networks:
     name: cloud-net
 
 services:
-  # 1. Web Frontend Server (Đã tách thành 2 service để Cân bằng tải)
-  web1:
+  # 1. Web Frontend Server
+  web:
     build: ./web
     image: dangtrieuvy/web:dev
-    container_name: web1 # <-- Service 1
+    container_name: web
     networks:
       - cloud-net
-    # 'ports' đã được XÓA. Chỉ proxy mới được expose port.
-    restart: unless-stopped
-
-  web2: # <-- THÊM MỚI service 2
-    build: ./web
-    image: dangtrieuvy/web:dev
-    container_name: web2 # <-- Service 2
-    networks:
-      - cloud-net
+    ports:
+      - "8080:80"
     restart: unless-stopped
 
   # 2. Application Backend Server
@@ -31,10 +24,11 @@ services:
     container_name: app
     networks:
       - cloud-net
-    # 'ports' đã được XÓA. Chỉ proxy mới được expose port.
     environment:
       OIDC_ISSUER: "http://auth:8080/realms/master"
       OIDC_AUDIENCE: "myapp"
+    ports:
+      - "8085:8081"
     restart: unless-stopped
 
   # 3. Relational Database Server (Giữ nguyên)
@@ -137,9 +131,8 @@ services:
   proxy:
     image: nginx:stable
     container_name: proxy
-    depends_on: # <-- CẬP NHẬT depends_on
-      - web1
-      - web2
+    depends_on:
+      - web
       - app
       - auth
     ports:

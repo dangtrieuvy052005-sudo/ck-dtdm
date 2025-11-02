@@ -184,6 +184,7 @@ def hello() -> Any:
 
 
 @app.get("/student")
+@app.get("/student/")
 def student() -> Any:
     """Return the static student catalogue used by the report demo."""
 
