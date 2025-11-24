@@ -61,7 +61,7 @@ services:
   auth:
     image: quay.io/keycloak/keycloak:latest
     container_name: auth
-    command: ["start-dev"]
+    command: ["start-dev", "--import-realm"]
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
@@ -73,6 +73,8 @@ services:
     restart: unless-stopped
     networks:
       - cloud-net
+    volumes:
+      - ./auth/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
 
   # 5. Object Storage Server
   storage:
