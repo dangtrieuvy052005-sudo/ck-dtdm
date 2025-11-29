@@ -1,5 +1,114 @@
-<!-- 1. Web Frontend Server (Nginx) -->
-<!-- File /html/blog/index.html -->
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Blog MyMiniCloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        margin: 0;
+        padding: 2rem;
+      }
+      a {
+        color: #38bdf8;
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 2.2rem;
+        color: #38bdf8;
+      }
+      .posts {
+        display: grid;
+        gap: 1.5rem;
+      }
+      article {
+        background: rgba(15, 23, 42, 0.85);
+        border-radius: 20px;
+        padding: 1.8rem;
+        box-shadow: 0 20px 40px rgba(2, 6, 23, 0.65);
+      }
+      article h2 {
+        margin-top: 0;
+        color: #facc15;
+      }
+      article p {
+        margin-bottom: 0.8rem;
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+      footer {
+        margin-top: 3rem;
+        text-align: center;
+        font-size: 0.9rem;
+        opacity: 0.75;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Nhật ký triển khai MiniCloud</h1>
+      <a href="/">← Về trang chủ</a>
+    </header>
 
-<h1>MyMiniCloud - Blog</h1>
-<a href="/">Back</a>
+    <section class="posts">
+      <article>
+        <h2>1. Thiết kế kiến trúc &amp; phân chia dịch vụ</h2>
+        <p>
+          Tôi bắt đầu bằng việc chuyển yêu cầu “9 server” trong đề bài thành kiến
+          trúc cụ thể: hai web server để cân bằng tải, một backend Flask, cơ sở
+          dữ liệu MariaDB, Keycloak, MinIO, Bind9, Prometheus, Grafana và Nginx
+          proxy. Docker Compose là chìa khóa giúp toàn bộ thành phần giao tiếp
+          chung trên mạng <code>cloud-net</code>.
+        </p>
+        <ul>
+          <li>Xác định cổng, volume và biến môi trường của từng container.</li>
+          <li>Đảm bảo các dịch vụ có thể mở rộng và được proxy điều phối.</li>
+          <li>Viết tài liệu để báo cáo nêu rõ chức năng của từng khối.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h2>2. Xây dựng pipeline bảo mật với Keycloak</h2>
+        <p>
+          API bảo mật là phần khó nhất. Tôi cấu hình realm <em>master</em>, client
+          <strong>myapp</strong> và dùng PyJWKClient để tự động lấy public key khi
+          giải mã JWT. Nhờ vậy endpoint <code>/secure</code> trả về payload chi tiết
+          của token mà không cần tái triển khai mỗi khi Keycloak xoay khóa.
+        </p>
+        <ul>
+          <li>Tích hợp biến môi trường <code>OIDC_ISSUER</code> và <code>OIDC_AUDIENCE</code>.</li>
+          <li>Xử lý ngoại lệ rõ ràng để hỗ trợ kiểm thử và viết báo cáo.</li>
+          <li>Đảm bảo thông điệp lỗi tiếng Việt, sát với yêu cầu môn học.</li>
+        </ul>
+      </article>
+
+      <article>
+        <h2>3. Giám sát và trực quan hóa</h2>
+        <p>
+          Để đạt điểm tối đa, hệ thống phải có giám sát. Tôi thêm job cho cả
+          Node Exporter lẫn cặp web server trong Prometheus. Grafana lấy dữ liệu
+          từ Prometheus và hiển thị dashboard gồm biểu đồ CPU, lưu lượng truy cập
+          và số request HTTP đến backend.
+        </p>
+        <ul>
+          <li>Cấu hình <code>prometheus.yml</code> theo đúng tên service.</li>
+          <li>Lên kế hoạch dashboard với ba biểu đồ tối thiểu.</li>
+          <li>Chuẩn bị hình ảnh minh họa để đưa vào báo cáo cuối kỳ.</li>
+        </ul>
+      </article>
+    </section>
+
+    <footer>Đồ án Điện toán Đám mây 2024 &mdash; Dang Trieu Vy</footer>
+  </body>
+</html>

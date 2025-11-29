@@ -10,8 +10,8 @@ server {
   index index.html;
 
   # Cấu hình cho trang chủ
-  location / { 
-    try_files $uri $uri/ =404; 
+  location / {
+    try_files $uri $uri/ /index.html;
   }
 
   # Cấu hình riêng cho trang blog

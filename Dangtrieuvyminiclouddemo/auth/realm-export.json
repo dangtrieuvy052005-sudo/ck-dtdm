@@ -1,0 +1,78 @@
+{
+  "realm": "realm_sv001",
+  "enabled": true,
+  "displayName": "MiniCloud Realm",
+  "users": [
+    {
+      "username": "sv_admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Sinh",
+      "lastName": "Vien",
+      "email": "sv_admin@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "P@ssw0rd",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "offline_access",
+        "default-roles-realm_sv001"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "flask-app",
+      "name": "Flask Backend",
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "redirectUris": [
+        "http://localhost:8085/*",
+        "http://app:8081/*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "defaultClientScopes": [
+        "web-origins",
+        "role_list",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone"
+      ]
+    }
+  ],
+  "defaultRoles": [
+    "offline_access",
+    "uma_authorization",
+    "default-roles-realm_sv001"
+  ],
+  "scopeMappings": [],
+  "clientScopeMappings": {},
+  "roles": {
+    "realm": [
+      {
+        "name": "default-roles-realm_sv001",
+        "composite": true,
+        "clientRole": false,
+        "containerId": "realm_sv001",
+        "composites": {
+          "realm": [
+            "offline_access",
+            "uma_authorization"
+          ]
+        }
+      }
+    ]
+  }
+}
